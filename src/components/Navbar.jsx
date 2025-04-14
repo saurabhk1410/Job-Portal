@@ -2,15 +2,23 @@ import React from "react";
 import ThemeSwitcher from "./ThemeSwitcher";
 import NavHeader from "./NavHeader";
 import { FaBell } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
+
+const profilePhoto = localStorage.getItem("profilePhoto");
 const Navbar = () => {
+
+
+
   return (
     <nav className="p-8 flex gap-6 items-center py-1 ">
-      <img
+    <Link to={"/profile"}>
+    <img
         className="w-14 h-14 object-cover rounded-full border-2 border-primary cursor-pointer"
-        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+        src={profilePhoto||"https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp" }
         alt="User avatar"
       />
+    </Link>
       <NavHeader />
       <div className="flex items-center gap-4">
         <div className="relative">

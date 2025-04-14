@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-const tabs = ["Home", "Jobs", "About", "Contact"];
+const tabs = ["Home", "Jobs","Profile","About", "Contact",];
 
 const NavHeader: React.FC = () => {
   const [position, setPosition] = useState({ left: 0, width: 0 });

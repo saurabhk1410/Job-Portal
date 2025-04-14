@@ -1,11 +1,12 @@
-import React from 'react';
-
+import React from 'react'
+import PersonalInfo from "../components/ProfileInfo/PersonalInfo"
 const Profile = () => {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-semibold">Candidate Profile</h1>
+    <div>
+        <PersonalInfo/>
     </div>
-  );
-};
 
-export default Profile;
+  )
+}
+
+export default Profile
