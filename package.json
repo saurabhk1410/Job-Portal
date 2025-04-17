@@ -13,7 +13,7 @@
     "@tailwindcss/vite": "^4.1.3",
     "axios": "^1.8.4",
     "daisyui": "^5.0.19",
-    "framer-motion": "^12.7.1",
+    "framer-motion": "^12.7.4",
     "jobportal": "file:",
     "lucide-react": "^0.488.0",
     "react": "^19.0.0",

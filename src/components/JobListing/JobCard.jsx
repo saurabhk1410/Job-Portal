@@ -60,17 +60,18 @@ const JobCard = ({ job }) => {
     <div className="relative card transition-all duration-200 border-2 rounded-lg p-6 w-full max-w-md">
 
       {/* ✅ Save Icon Top Right */}
-      <button
-        className="absolute top-3 right-3 text-gray-500 hover:text-blue-600 cursor-pointer" 
-        title={isSaved ? "Unsave this job" : "Save this job"}
-        onClick={() => setIsSaved(!isSaved)}
-      >
-        {isSaved ? (
-          <FaBookmark className="text-xl text-blue-600" />
-        ) : (
-          <FaRegBookmark className="text-xl" />
-        )}
-      </button>
+      <div className="tooltip absolute top-3 right-3 z-10" data-tip={isSaved ? "Unsave" : "Save"}>
+  <button
+    className="text-gray-500 hover:text-blue-600 cursor-pointer"
+    onClick={() => setIsSaved(!isSaved)}
+  >
+    {isSaved ? (
+      <FaBookmark className="text-xl text-blue-600" />
+    ) : (
+      <FaRegBookmark className="text-xl" />
+    )}
+  </button>
+</div>
 
       {/* Logo + Title + Company + Location */}
       <div className="flex items-center gap-4 mb-4">
