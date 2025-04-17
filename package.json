@@ -15,6 +15,7 @@
     "daisyui": "^5.0.19",
     "framer-motion": "^12.7.1",
     "jobportal": "file:",
+    "lucide-react": "^0.488.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",

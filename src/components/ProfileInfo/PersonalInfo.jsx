@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
-
+import { LiaBirthdayCakeSolid } from "react-icons/lia";
+import FloatingInput from "./FloatingInput"; // adjust path if needed
 
 const UserCardForm = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -12,8 +13,6 @@ const UserCardForm = () => {
   const [resumeUrl, setResumeUrl] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
-
-  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -27,11 +26,10 @@ const UserCardForm = () => {
       reader.readAsDataURL(file);
     }
   };
-  
 
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("userData"));
-  
+
     if (savedData) {
       setProfilePhoto(savedData.profilePhoto || null);
       setName(savedData.name || "");
@@ -45,12 +43,9 @@ const UserCardForm = () => {
     }
   }, []);
 
-  
-
-  
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     if (!/^\S+@\S+\.\S+$/.test(email)) {
       alert("Invalid email format");
       return;
@@ -64,10 +59,12 @@ const UserCardForm = () => {
       return;
     }
     if (!/^\+?\d{10,15}$/.test(phone)) {
-      alert("Phone number must be valid with country code (e.g. +919876543210)");
+      alert(
+        "Phone number must be valid with country code (e.g. +919876543210)"
+      );
       return;
     }
-  
+
     const userData = {
       profilePhoto,
       name,
@@ -79,15 +76,16 @@ const UserCardForm = () => {
       phone,
       location,
     };
-  
+
     localStorage.setItem("userData", JSON.stringify(userData)); // ✅ Save everything
     alert("Saved successfully!");
   };
-  
-  
 
   return (
-    <form onSubmit={handleSubmit} className="border-2 max-w-3xl mx-auto rounded-2xl p-6">
+    <form
+      onSubmit={handleSubmit}
+      className="border-2 max-w-3xl mx-auto rounded-2xl p-6 font-semibold"
+    >
       <div className="flex flex-col items-center mb-4">
         {/* Uploadable Profile Photo */}
         <label htmlFor="photo-upload" className="cursor-pointer relative group">
@@ -139,63 +137,52 @@ const UserCardForm = () => {
 
       {/* Form Inputs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input
+        <FloatingInput
+          label="Full Name"
           type="text"
-          placeholder="Full Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="input input-bordered w-full focus:outline-none"
         />
 
-<div className="flex items-center justify-between gap-x-4 px-1">
-  <label className="">DOB:</label>
-  <input
-    type="date"
-    value={dob}
-    onChange={(e) => setDob(e.target.value)}
-    className="input input-bordered text-base-content focus:outline-none w-full"
-  />
-</div>
-
-
-        <input
+        <FloatingInput
+          label="Date Of Birth"
+          type="date"
+          value={dob}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <FloatingInput
+          label="Email"
           type="email"
-          placeholder="Email Address"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="input input-bordered w-full focus:outline-none"
+          onChange={(e) => setName(e.target.value)}
         />
 
-        <input
+        <FloatingInput
+          label="LinkedIn Profile URL"
           type="url"
-          placeholder="LinkedIn Profile URL"
           value={linkedIn}
-          onChange={(e) => setLinkedIn(e.target.value)}
-          className="input input-bordered w-full focus:outline-none"
+          onChange={(e) => setName(e.target.value)}
         />
 
-        <input
+        <FloatingInput
+          label="Resume URL"
           type="url"
-          placeholder="Resume URL"
           value={resumeUrl}
-          onChange={(e) => setResumeUrl(e.target.value)}
-          className="input input-bordered w-full focus:outline-none"
+          onChange={(e) => setName(e.target.value)}
         />
 
-        <input
+        <FloatingInput
+          label="Phone Number (with country code)"
           type="tel"
-          placeholder="Phone Number (with country code)"
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className="input input-bordered w-full focus:outline-none"
+          onChange={(e) => setName(e.target.value)}
         />
 
-        <input
+        <FloatingInput
+          label="Location (City, State, Country)"
           type="text"
-          placeholder="Location (City, State, Country)"
           value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="input input-bordered w-full md:col-span-2 focus:outline-none"
+          onChange={(e) => setName(e.target.value)}
         />
 
         <button type="submit" className="btn btn-neutral col-span-full mt-2">
