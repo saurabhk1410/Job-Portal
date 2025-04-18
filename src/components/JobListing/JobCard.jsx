@@ -126,7 +126,7 @@ const JobCard = ({ job }) => {
       <div className="flex flex-col items-start mt-2">
         <a
           href={job.applyLink}
-          className="btn btn-outline hover:btn-neutral w-full"
+          className="btn btn-neutral w-full"
         >
           Apply Now
         </a>

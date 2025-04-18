@@ -82,10 +82,14 @@ const UserCardForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="border-2 max-w-3xl mx-auto rounded-2xl p-6 font-semibold"
-    >
+<div className="relative max-w-3xl mx-auto mt-6">
+  <form
+    onSubmit={handleSubmit}
+    className="border-2 rounded-2xl p-6 pt-10 font-semibold"
+  >
+    <span className="absolute -top-4 left-6 bg-white px-2 text-lg font-semibold text-gray-600">
+      Personal Info
+    </span>
       <div className="flex flex-col items-center mb-4">
         {/* Uploadable Profile Photo */}
         <label htmlFor="photo-upload" className="cursor-pointer relative group">
@@ -190,6 +194,7 @@ const UserCardForm = () => {
         </button>
       </div>
     </form>
+    </div>
   );
 };
 export default UserCardForm;

@@ -25,11 +25,16 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10">
-      <div className="border-2 rounded-2xl p-6 font-semibold bg-base-100">
-        <h1 className="text-3xl font-bold text-center mb-6">Contact Us</h1>
+<div className="relative max-w-4xl mx-auto mt-10">
+  <p className="absolute -top-3 left-6 bg-base-100 px-4 text-xl font-sans z-10">
+    Contact Us
+  </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div className="border-2 rounded-2xl px-10 pb-6 font-semibold bg-base-100">
+    {/* contact content here */}
+    <div className="max-w-5xl mx-auto mt-10">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16">
           {/* Left Column: Contact Info */}
           <div className="space-y-6 text-base-content">
             <div className="flex items-center gap-4">
@@ -107,8 +112,15 @@ const ContactPage = () => {
             )}
           </form>
         </div>
-      </div>
+      
     </div>
+  </div>
+</div>
+
+
+
+
+  
   );
 };
 
