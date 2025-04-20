@@ -127,16 +127,17 @@ const JobCard = ({ job, onAction }) => {
       <div className="flex flex-col gap-4 px-3 mt-2">
         {/* Badges */}
         <div className="flex justify-center gap-6">
-          <span className="bg-blue-300 text-blue-950 badge border-0">
-            {job.category}
-          </span>
-          <span className="badge bg-blue-300 text-blue-950 border-0">
-            {job.workMode}
-          </span>
-          <span className="badge bg-blue-300 text-blue-950 border-0">
-            {job.employmentType}
-          </span>
-        </div>
+  <span className="bg-blue-300 text-blue-950 badge border-0 whitespace-nowrap">
+    {job.category}
+  </span>
+  <span className="badge bg-blue-300 text-blue-950 border-0 whitespace-nowrap">
+    {job.workMode}
+  </span>
+  <span className="badge bg-blue-300 text-blue-950 border-0 whitespace-nowrap">
+    {job.employmentType}
+  </span>
+</div>
+
 
         {/* Skills */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
