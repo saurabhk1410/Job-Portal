@@ -184,7 +184,7 @@ const jobsData = [
   {
     id: 13,
     title: "Frontend Developer",
-    company: "Insightify",
+    company: "Insightif",
     location: "Kolkata, India",
     category: "Job",
     workMode: "Onsite",
