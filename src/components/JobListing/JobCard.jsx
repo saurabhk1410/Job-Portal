@@ -67,22 +67,30 @@ const JobCard = ({ job, onAction }) => {
     isInLocalStorage("appliedJobs", job.id)
   );
 
-  const handleSave = () => {
+  const handleSaveToggle = () => {
+    const saved = JSON.parse(localStorage.getItem("savedJobs")) || [];
+    let updated;
+  
     if (isSaved) {
-      removeFromLocalStorage("savedJobs", job.id);
+      updated = saved.filter((id) => id !== job.id);
     } else {
-      addToLocalStorage("savedJobs", job.id);
+      updated = [...saved, job.id];
     }
+  
+    localStorage.setItem("savedJobs", JSON.stringify(updated));
     setIsSaved(!isSaved);
-    onAction?.(); // callback to hide on save
+  
+    // Trigger a custom event to let SavedJobs page know
+    window.dispatchEvent(new Event("savedJobsChanged"));
   };
+  
 
   const handleApply = () => {
     if (!isApplied) {
       addToLocalStorage("appliedJobs", job.id);
       setIsApplied(true);
       onAction?.(); // callback to hide on apply
-      window.open(job.applyLink, "_blank");
+      // window.open(job.applyLink, "_blank");
     }
   };
 
@@ -93,7 +101,7 @@ const JobCard = ({ job, onAction }) => {
     <div className="relative card transition-all duration-200 border-2 rounded-lg p-6 w-full max-w-md">
       {/* ✅ Save Icon Top Right */}
       <div className="tooltip absolute top-3 right-3 z-10" data-tip={isSaved ? "Unsave" : "Save"}>
-        <button className="cursor-pointer" onClick={handleSave}>
+        <button className="cursor-pointer" onClick={handleSaveToggle}>
           {isSaved ? <FaBookmark className="text-xl" /> : <FaRegBookmark className="text-xl" />}
         </button>
       </div>

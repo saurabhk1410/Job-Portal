@@ -13,9 +13,11 @@ import About from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import { useTheme } from "./context/ThemeContext";
 import SavedJobs from "./pages/SavedJobs";
+import AppliedJobs from "./pages/AppliedJobs";
+import Notifications from "./pages/Notifications";
 
 const App = () => {
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <Router>
@@ -29,7 +31,8 @@ className={`min-h-screen pt-24 ${theme === "light" ? "bg-purple-200" : "bg-base-
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/savedjobs" element={<SavedJobs />} />
-
+          <Route path="/appliedjobs" element={<AppliedJobs />} />
+          <Route path="/notifications" element={<Notifications />} />
         </Routes>
       </div>
     </Router>
