@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Trash2, MapPin, CalendarDays, Briefcase } from "lucide-react";
 import FloatingInput from "./FloatingInput";
-
+import { FaIndianRupeeSign } from "react-icons/fa6";
+import { useTheme } from "../../context/ThemeContext";
 // Duration calculation
 const getDuration = (from, to) => {
+
   const start = new Date(from);
   const end = new Date(to);
 
@@ -26,6 +28,7 @@ const getDuration = (from, to) => {
 };
 
 const ExperienceForm = () => {
+  const {theme}=useTheme();
   const [experiences, setExperiences] = useState([]);
   const [form, setForm] = useState({
     company: "",
@@ -35,6 +38,7 @@ const ExperienceForm = () => {
     role: "",
     from: "",
     to: "",
+    salary:0
   });
 
   useEffect(() => {
@@ -64,6 +68,7 @@ const ExperienceForm = () => {
       role: "",
       from: "",
       to: "",
+      salary:0
     });
   };
 
@@ -75,7 +80,7 @@ const ExperienceForm = () => {
 
   return (
     <div className="relative max-w-3xl mx-auto mt-10">
-      <div className="absolute -top-4 left-6 bg-base-100 px-2 text-lg font-semibold text-gray-600">
+      <div className={`absolute -top-4 left-6 px-2 text-lg font-semibold text-gray-600 ${theme=="light"?"bg-purple-200":"bg-base-100"}`}>
         Experience
       </div>
       <div className="p-6 border-2 rounded-2xl">
@@ -96,46 +101,43 @@ const ExperienceForm = () => {
             onChange={handleChange}
           />
 
-          {/* Mode as radio */}
-          <div>
-            <label className="block font-medium mb-1">Work Mode</label>
-            <div className="flex gap-4">
-              {["Offline", "Online", "Hybrid"].map((mode) => (
-                <label key={mode} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="mode"
-                    value={mode}
-                    checked={form.mode === mode}
-                    onChange={handleChange}
-                    className="radio"
-                  />
-                  {mode}
-                </label>
-              ))}
-            </div>
-          </div>
+        {/* Mode as buttons behaving like radio */}
+<div>
+  <div className="flex gap-0">
+    {["Offline", "Online", "Hybrid"].map((mode) => (
+      <button
+        key={mode}
+        type="button"
+        onClick={() => handleChange({ target: { name: "mode", value: mode } })}
+        className={`px-4 py-2 cursor-pointer border transition-colors duration-200
+          ${form.mode === mode
+            ? "bg-primary text-white border-primary"
+            : "bg-base-200 text-base-content border-base-300 hover:bg-base-300"}`}
+      >
+        {mode}
+      </button>
+    ))}
+  </div>
+</div>
 
-          {/* Type toggle */}
-          <div>
-            <label className="block font-medium mb-1">Type</label>
-            <div className="flex gap-4">
-              {["Internship", "Job"].map((type) => (
-                <button
-                  key={type}
-                  type="button"
-                  className={`px-4 py-2 rounded-full border ${
-                    form.type === type
-                      ? "bg-neutral text-white"
-                      : "bg-base-100 text-neutral border-neutral"
-                  }`}
-                  onClick={() => setForm((prev) => ({ ...prev, type }))}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-          </div>
+
+<div>
+  <div className="flex gap-0">
+    {["Internship", "Job"].map((type) => (
+      <button
+        key={type}
+        type="button"
+        onClick={() => setForm((prev) => ({ ...prev, type }))}
+        className={`px-4 py-2 cursor-pointer border transition-colors duration-200
+          ${form.type === type
+            ? "bg-primary text-white border-primary"
+            : "bg-base-200 text-base-content border-base-300 hover:bg-base-300"}`}
+      >
+        {type}
+      </button>
+    ))}
+  </div>
+</div>
 
           {/* Role as text input */}
           <FloatingInput
@@ -146,20 +148,33 @@ const ExperienceForm = () => {
             onChange={handleChange}
           />
 
-          <input
-            type="date"
-            name="from"
-            value={form.from}
+<FloatingInput
+            label="Salary/Stipend (Rupees)"
+            type="number"
+            name="salary"
+            value={form.salary}
             onChange={handleChange}
-            className="input input-bordered w-full focus:outline-0"
           />
-          <input
-            type="date"
-            name="to"
-            value={form.to}
-            onChange={handleChange}
-            className="input input-bordered w-full focus:outline-0"
-          />
+
+<FloatingInput
+  label="From"
+  type="date"
+  name="from"
+  value={form.from}
+  onChange={handleChange}
+  max={form.to}
+/>
+
+<FloatingInput
+  label="To"
+  type="date"
+  name="to"
+  value={form.to}
+  onChange={handleChange}
+  min={form.from}
+/>
+
+    
         </div>
 
         <div className="text-center">
@@ -171,43 +186,65 @@ const ExperienceForm = () => {
         {experiences.length > 0 ? (
           <div className="mt-10 grid gap-6 sm:grid-cols-1 px-6 sm:px-16">
             {experiences.map((exp, idx) => (
-              <div
-                key={idx}
-                className="relative p-6 bg-base-200 rounded-2xl shadow-sm hover:shadow-lg border border-base-300 transition-all"
-              >
-                <button
-                  className="absolute top-4 right-4 btn btn-xs btn-square btn-error"
-                  onClick={() => handleDelete(exp.company)}
-                  title="Delete"
-                >
-                  <Trash2 size={16} />
-                </button>
-
-                <h3 className="text-xl font-bold mb-1">{exp.company}</h3>
-
-                {/* Role and Mode */}
-                <p className="mb-2 flex items-center gap-2">
-                  <Briefcase size={16} className="text-neutral" />
-                  <span>{exp.role}</span>
-                  <span className="mx-1">•</span>
-                  <span>{exp.mode}</span>
-                  <span className="mx-1">•</span>
-                  <span>{exp.type}</span>
-                </p>
-
-                <p className="mb-1 flex items-center gap-2">
-                  <MapPin size={16} className="text-neutral" />
-                  {exp.location}
-                </p>
-
-                <p className="mb-3 flex items-center gap-2">
-                  <CalendarDays size={16} className="text-neutral" />
-                  {exp.from} - {exp.to}
-                  <span className="ml-2 text-sm text-base-content/60 italic">
-                    ({getDuration(exp.from, exp.to)})
-                  </span>
-                </p>
-              </div>
+          <div
+          key={idx}
+          className="bg-info/40 relative p-6 rounded-2xl shadow-sm hover:shadow-lg border border-base-300 transition-all hover:border-primary/30 group"
+        >
+          {/* Delete button with DaisyUI classes */}
+          <button
+            className="absolute top-4 right-4 btn btn-sm btn-square btn-error transition-opacity hover:scale-110"
+            onClick={() => handleDelete(exp.company)}
+            title="Delete"
+            aria-label={`Delete ${exp.company} experience`}
+          >
+            <Trash2 size={16} />
+          </button>
+        
+          {/* Company name with accent */}
+          <div className="flex gap-4 items-center mb-3">
+            <h3 className="text-xl font-bold">{exp.role}</h3>
+        
+            <span className="badge badge-primary border-primary/30 text-sm">
+              {exp.mode}
+            </span>
+        
+            <span className="badge badge-primary border-primary/30 text-sm">
+              {exp.type}
+            </span>
+          </div>
+        
+          {/* Role and Mode - using DaisyUI badges */}
+          <div className="flex items-center gap-2 mb-2">
+            <Briefcase size={18} className="text-primary/80" />
+            <span className="">{exp.company}</span>
+          </div>
+        
+          {/* Details grid for better alignment */}
+          <div className="grid gap-2">
+            <div className="flex items-center gap-2">
+              <MapPin size={16} className="text-primary/80" />
+              <span>{exp.location}</span>
+            </div>
+        
+            <div className="flex items-center gap-2">
+              <CalendarDays size={16} className="text-primary/80" />
+              <span>
+                {exp.from} to {exp.to}
+                <span className="ml-2 text-sm text-base-content/60 italic">
+                  ({getDuration(exp.from, exp.to)})
+                </span>
+              </span>
+            </div>
+        
+            <div className="flex items-center gap-2 badge badge-neutral p-4">
+              <FaIndianRupeeSign size={16} className="" />
+              <span className="font-medium ">
+                {exp.salary} <span className="font-normal">per month</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        
             ))}
           </div>
         ) : (

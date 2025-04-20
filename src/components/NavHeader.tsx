@@ -1,40 +1,43 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const tabs = ["Home", "Jobs","Profile","About", "Contact",];
+const tabs = ["Home", "Jobs", "Profile", "About", "Contact"];
+
+const pathToTab: Record<string, string> = {
+  "/": "Home",
+  "/jobs": "Jobs",
+  "/profile": "Profile",
+  "/about": "About",
+  "/contact": "Contact",
+};
 
 const NavHeader: React.FC = () => {
   const [position, setPosition] = useState({ left: 0, width: 0 });
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const tabRefs = useRef<{ [key: string]: HTMLLIElement | null }>({});
   const navigate = useNavigate();
+  const location = useLocation();
 
   const updatePosition = (element: HTMLLIElement) => {
     setPosition({ left: element.offsetLeft, width: element.offsetWidth });
   };
 
   const handleTabClick = (tab: string) => {
-    setActiveTab(tab);
-    localStorage.setItem("activeTab", tab);
-    const el = tabRefs.current[tab];
-    if (el) updatePosition(el);
     navigate(tab === "Home" ? "/" : `/${tab.toLowerCase()}`);
   };
 
-  // Restore activeTab from localStorage and update bubble position
   useEffect(() => {
-    const storedTab = localStorage.getItem("activeTab");
-    if (storedTab) {
-      setActiveTab(storedTab);
+    const currentPath = location.pathname;
+    const matchedTab = pathToTab[currentPath];
+    setActiveTab(matchedTab);
 
-      // Delay to ensure ref is available after render
-      setTimeout(() => {
-        const el = tabRefs.current[storedTab];
-        if (el) updatePosition(el);
-      }, 0);
-    }
-  }, []);
+    // Delay to ensure refs are ready
+    setTimeout(() => {
+      const el = matchedTab && tabRefs.current[matchedTab];
+      if (el) updatePosition(el);
+    }, 0);
+  }, [location.pathname]); // Trigger when path changes
 
   return (
     <div className="relative flex items-center justify-center w-full py-4">

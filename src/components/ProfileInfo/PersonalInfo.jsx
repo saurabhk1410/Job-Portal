@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 import FloatingInput from "./FloatingInput"; // adjust path if needed
-
+import { useTheme } from "../../context/ThemeContext";
 const UserCardForm = () => {
+  const {theme}=useTheme();
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
@@ -87,7 +88,7 @@ const UserCardForm = () => {
     onSubmit={handleSubmit}
     className="border-2 rounded-2xl p-6 pt-10 font-semibold"
   >
-    <span className="absolute -top-4 left-6 bg-white px-2 text-lg font-semibold text-gray-600">
+    <span className={`absolute -top-4 left-6   ${theme=="light"?"bg-purple-200":"bg-base-100"} px-2 text-lg font-semibold text-gray-600`}>
       Personal Info
     </span>
       <div className="flex flex-col items-center mb-4">
@@ -128,7 +129,7 @@ const UserCardForm = () => {
               <span
                 className={`inline-block px-3 py-1 rounded-full text-sm transition ${
                   gender === g
-                    ? "bg-neutral text-neutral-content"
+                    ? "bg-primary text-primary-content"
                     : "bg-base-200 text-base-content"
                 }`}
               >

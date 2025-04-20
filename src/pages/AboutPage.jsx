@@ -2,7 +2,9 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FiTarget, FiUsers, FiZap, FiCode, FiAward } from "react-icons/fi";
 
-const AboutPage = () => {
+const AboutPage = ({colormode}) => {
+ console.log(colormode);
+ 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
@@ -16,8 +18,8 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
-      {/* Hero */}
+<div className={`max-w-5xl mx-auto px-4 sm:px-6 py-12 `}>
+{/* Hero */}
       <motion.section 
         initial="hidden"
         animate="visible"

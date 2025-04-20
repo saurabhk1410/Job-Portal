@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Star, Trash2 } from "lucide-react"; // Optional: for better icons
 import FloatingInput from "./FloatingInput";
+import { useTheme } from "../../context/ThemeContext";
 
 const SkillsForm = () => {
+  const {theme}=useTheme();
   const [skillInput, setSkillInput] = useState("");
   const [rating, setRating] = useState(1);
   const [skills, setSkills] = useState([]);
@@ -40,7 +42,7 @@ const SkillsForm = () => {
 
   return (
     <div className="relative max-w-3xl mx-auto mt-10">
-      <div className="absolute -top-4 left-6 bg-base-100 px-2 text-lg font-semibold text-gray-600">
+      <div className={`absolute -top-4 left-6 px-2 text-lg font-semibold text-gray-600   ${theme=="light"?"bg-purple-200":"bg-base-100"}`}>
         Skills
       </div>
       <div className="p-6 border-2 rounded-2xl">

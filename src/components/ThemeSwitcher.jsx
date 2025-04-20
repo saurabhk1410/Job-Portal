@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {  FaSun } from "react-icons/fa";
 import { GoMoon } from "react-icons/go";
-
+import AboutPage from "../pages/AboutPage";
+import { useTheme } from "../context/ThemeContext";
 const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState("light");
+  const{theme,setTheme}=useTheme();
+
+console.log(theme);
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") || "light";
@@ -19,6 +22,8 @@ const ThemeSwitcher = () => {
   };
 
   return (
+  
+    
     <button
       onClick={toggleTheme}
       className="p-2 rounded-full transition-colors duration-300 text-base-content cursor-pointer"
@@ -30,6 +35,10 @@ const ThemeSwitcher = () => {
         <FaSun className="text-3xl" />
       )}
     </button>
+
+
+  
+
   );
 };
 

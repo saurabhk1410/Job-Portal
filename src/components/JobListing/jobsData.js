@@ -39,7 +39,7 @@ const jobsData = [
       employmentType: "Full-time",
       postedDate: "1 day ago",
       experienceLevel: "Fresher",
-      skills: ["MERN Stack", "Git", "REST APIs","react","javascript","node","python","aws","firebase"],
+      skills: ["MERN", "Git", "REST APIs","react","javascript","node","python","aws","firebase"],
       applyLink: "#",
       salary: "₹15,000/month",
       logo: "https://dummyimage.com/60x60/000/fff&text=DS"
@@ -99,7 +99,7 @@ const jobsData = [
       employmentType: "Full-time",
       postedDate: "4 days ago",
       experienceLevel: "2+ years",
-      skills: ["React Native", "Redux", "Firebase","react","javascript","node","python","aws","firebase"],
+      skills: ["MERN", "Redux", "Firebase","react","javascript","node","python","aws","firebase"],
       applyLink: "#",
       salary: "₹7-10 LPA",
       logo: "https://dummyimage.com/60x60/000/fff&text=AF"
