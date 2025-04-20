@@ -3,7 +3,7 @@ const jobsData = [
 
   {
     id: 1,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "SecureWave",
     location: "Pune, India",
     category: "Job",
@@ -18,7 +18,7 @@ const jobsData = [
   },
   {
     id: 2,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "SkyCloud",
     location: "Remote",
     category: "Intern",
@@ -33,7 +33,7 @@ const jobsData = [
   },
   {
     id: 3,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "Insightify",
     location: "Kolkata, India",
     category: "Job",
@@ -48,7 +48,7 @@ const jobsData = [
   },
   {
     id: 4,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "MobDev",
     location: "Ahmedabad, India",
     category: "Job",
@@ -63,7 +63,7 @@ const jobsData = [
   },
   {
     id: 5,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "TestSphere",
     location: "Remote",
     category: "Intern",
@@ -78,7 +78,7 @@ const jobsData = [
   },
   {
     id: 6,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "NeuroNet",
     location: "Bangalore, India",
     category: "Intern",
@@ -93,7 +93,7 @@ const jobsData = [
   },
   {
     id: 7,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "HelpMeTech",
     location: "Nagpur, India",
     category: "Job",
@@ -108,7 +108,7 @@ const jobsData = [
   },
   {
     id: 8,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "CreativeCore",
     location: "Delhi, India",
     category: "Job",
@@ -123,7 +123,7 @@ const jobsData = [
   },
   {
     id: 9,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "WebNest",
     location: "Remote",
     category: "Intern",
@@ -138,7 +138,7 @@ const jobsData = [
   },
   {
     id: 10,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "InnovixAI",
     location: "Mumbai, India",
     category: "Job",
@@ -153,7 +153,7 @@ const jobsData = [
   },
   {
     id: 11,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "SecureWave",
     location: "Pune, India",
     category: "Job",
@@ -168,7 +168,7 @@ const jobsData = [
   },
   {
     id: 12,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "SkyCloud",
     location: "Remote",
     category: "Intern",
@@ -183,7 +183,7 @@ const jobsData = [
   },
   {
     id: 13,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "Insightif",
     location: "Kolkata, India",
     category: "Job",
@@ -198,7 +198,7 @@ const jobsData = [
   },
   {
     id: 14,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "MobDev",
     location: "Ahmedabad, India",
     category: "Job",
@@ -213,7 +213,7 @@ const jobsData = [
   },
   {
     id: 15,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "TestSphere",
     location: "Remote",
     category: "Intern",
@@ -228,7 +228,7 @@ const jobsData = [
   },
   {
     id: 16,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "NeuroNet",
     location: "Bangalore, India",
     category: "Intern",
@@ -243,7 +243,7 @@ const jobsData = [
   },
   {
     id: 17,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "HelpMeTech",
     location: "Nagpur, India",
     category: "Job",
@@ -258,7 +258,7 @@ const jobsData = [
   },
   {
     id: 18,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "CreativeCore",
     location: "Delhi, India",
     category: "Job",
@@ -273,7 +273,7 @@ const jobsData = [
   },
   {
     id: 19,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "WebNest",
     location: "Remote",
     category: "Intern",
@@ -288,7 +288,7 @@ const jobsData = [
   },
   {
     id: 20,
-    title: "Frontend Developer",
+    title: "Data Engineer",
     company: "InnovixAI",
     location: "Mumbai, India",
     category: "Job",
