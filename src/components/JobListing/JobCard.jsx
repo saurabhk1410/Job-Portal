@@ -98,8 +98,8 @@ const JobCard = ({ job, onAction }) => {
   // const [isSaved, setIsSaved] = React.useState(false); // 🔄 Save state
 
   return (
-    <div className="relative card transition-all duration-200 border-2 rounded-lg p-6 w-full max-w-md">
-      {/* ✅ Save Icon Top Right */}
+<div className="relative card transition-all duration-200 border-2 rounded-lg p-6 w-full max-w-[350px] mx-auto">
+{/* ✅ Save Icon Top Right */}
       <div className="tooltip absolute top-3 right-3 z-10" data-tip={isSaved ? "Unsave" : "Save"}>
         <button className="cursor-pointer" onClick={handleSaveToggle}>
           {isSaved ? <FaBookmark className="text-xl" /> : <FaRegBookmark className="text-xl" />}
@@ -118,7 +118,7 @@ const JobCard = ({ job, onAction }) => {
           }}
         />
         <div className="flex flex-col justify-center gap-0">
-          <h2 className="text-xl font-mono">{job.title}</h2>
+          <h2 className="text-xl font-mono whitespace-nowrap">{job.title}</h2>
           <p className="font-serif">{job.company}</p>
           <p className="font-sans">{job.location}</p>
         </div>
