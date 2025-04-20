@@ -61,38 +61,6 @@ const Navbar = () => {
           <div className="px-4 py-2">
             <NavHeader mobile />
           </div>
-          <div className="px-4 py-2 flex flex-col space-y-4">
-            <button 
-              onClick={() => {
-                navigate("/appliedjobs");
-                setMobileMenuOpen(false);
-              }}
-              className="flex items-center gap-2 text-lg"
-            >
-              <VscGitStashApply /> Applied Jobs
-            </button>
-            <button 
-              onClick={() => {
-                navigate("/savedjobs");
-                setMobileMenuOpen(false);
-              }}
-              className="flex items-center gap-2 text-lg"
-            >
-              <FaRegBookmark /> Saved Jobs
-            </button>
-            <button 
-              onClick={() => {
-                navigate("/notifications");
-                setMobileMenuOpen(false);
-              }}
-              className="flex items-center gap-2 text-lg"
-            >
-              <FaBell /> Notifications
-              <span className="bg-red-600 text-white text-xs px-1.5 py-0.5 rounded-full font-semibold">
-                5
-              </span>
-            </button>
-          </div>
         </div>
       )}
     </>
