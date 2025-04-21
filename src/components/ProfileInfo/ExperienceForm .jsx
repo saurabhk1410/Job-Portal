@@ -188,74 +188,75 @@ const ExperienceForm = () => {
         </div>
 
         {experiences.length > 0 ? (
-          <div className="mt-10 grid gap-6 sm:grid-cols-1 px-6 sm:px-16">
-            {experiences.map((exp, idx) => (
-          <div
-          key={idx}
-          className="bg-info/40 relative p-6 rounded-2xl shadow-sm hover:shadow-lg border border-base-300 transition-all hover:border-primary/30 group"
+  <div className="mt-10 grid gap-6 grid-cols-1 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12">
+    {experiences.map((exp, idx) => (
+      <div
+        key={idx}
+        className="bg-info/40 relative p-4 sm:p-6 rounded-xl md:rounded-2xl shadow-sm hover:shadow-md md:hover:shadow-lg border border-base-300 transition-all hover:border-primary/30 group"
+      >
+        {/* Delete button - position adjusted for mobile */}
+        <button
+          className="absolute top-2 right-2 sm:top-4 sm:right-4 btn btn-xs sm:btn-sm btn-square btn-error transition-opacity hover:scale-110"
+          onClick={() => handleDelete(exp.company)}
+          title="Delete"
+          aria-label={`Delete ${exp.company} experience`}
         >
-          {/* Delete button with DaisyUI classes */}
-          <button
-            className="absolute top-4 right-4 btn btn-sm btn-square btn-error transition-opacity hover:scale-110"
-            onClick={() => handleDelete(exp.company)}
-            title="Delete"
-            aria-label={`Delete ${exp.company} experience`}
-          >
-            <Trash2 size={16} />
-          </button>
-        
-          {/* Company name with accent */}
-          <div className="flex gap-4 items-center mb-3">
-            <h3 className="text-xl font-bold">{exp.role}</h3>
-        
-            <span className="badge badge-primary border-primary/30 text-sm">
+          <Trash2 size={14} className="sm:size-4" />
+        </button>
+      
+        {/* Company name with accent - stacked on mobile */}
+        <div className="flex flex-col sm:flex-row sm:gap-4 sm:items-center mb-3 gap-2">
+          <h3 className="text-lg sm:text-xl font-bold">{exp.role}</h3>
+      
+          <div className="flex gap-2">
+            <span className="badge badge-primary border-primary/30 text-xs sm:text-sm">
               {exp.mode}
             </span>
-        
-            <span className="badge badge-primary border-primary/30 text-sm">
+      
+            <span className="badge badge-primary border-primary/30 text-xs sm:text-sm">
               {exp.type}
             </span>
           </div>
-        
-          {/* Role and Mode - using DaisyUI badges */}
-          <div className="flex items-center gap-2 mb-2">
-            <Briefcase size={18} className="text-primary/80" />
-            <span className="">{exp.company}</span>
+        </div>
+      
+        {/* Role and Mode - adjusted spacing for mobile */}
+        <div className="flex items-center gap-2 mb-2">
+          <Briefcase size={16} className="text-primary/80 min-w-[16px]" />
+          <span className="text-sm sm:text-base">{exp.company}</span>
+        </div>
+      
+        {/* Details grid - adjusted for mobile */}
+        <div className="grid gap-1 sm:gap-2">
+          <div className="flex items-center gap-2">
+            <MapPin size={14} className="text-primary/80 min-w-[14px] sm:min-w-[16px]" />
+            <span className="text-sm sm:text-base">{exp.location}</span>
           </div>
-        
-          {/* Details grid for better alignment */}
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2">
-              <MapPin size={16} className="text-primary/80" />
-              <span>{exp.location}</span>
-            </div>
-        
-            <div className="flex items-center gap-2">
-              <CalendarDays size={16} className="text-primary/80" />
-              <span>
-                {exp.from} to {exp.to}
-                <span className="ml-2 text-sm text-base-content/60 italic">
-                  ({getDuration(exp.from, exp.to)})
-                </span>
+      
+          <div className="flex items-center gap-2">
+            <CalendarDays size={14} className="text-primary/80 min-w-[14px] sm:min-w-[16px]" />
+            <span className="text-sm sm:text-base">
+              {exp.from} to {exp.to}
+              <span className="ml-1 sm:ml-2 text-xs sm:text-sm text-base-content/60 italic">
+                ({getDuration(exp.from, exp.to)})
               </span>
-            </div>
-        
-            <div className="flex items-center gap-2 badge badge-neutral p-4">
-              <FaIndianRupeeSign size={16} className="" />
-              <span className="font-medium ">
-                {exp.salary} <span className="font-normal">per month</span>
-              </span>
-            </div>
+            </span>
+          </div>
+      
+          <div className="flex items-center gap-2 badge badge-neutral p-2 sm:p-3 mt-1">
+            <FaIndianRupeeSign size={14} className="sm:size-4" />
+            <span className="text-sm sm:text-base font-medium">
+              {exp.salary} <span className="font-normal">per month</span>
+            </span>
           </div>
         </div>
-        
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-base-content/50 mt-6 italic">
-            No experiences added yet.
-          </p>
-        )}
+      </div>
+    ))}
+  </div>
+) : (
+  <p className="text-center text-base-content/50 mt-6 italic text-sm sm:text-base">
+    No experiences added yet.
+  </p>
+)}
       </div>
     </div>
   );
