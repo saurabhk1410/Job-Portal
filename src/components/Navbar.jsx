@@ -39,12 +39,32 @@ const Navbar = () => {
         </div>
         
         <div className="flex items-center gap-4 md:gap-8">
-          <div className="relative cursor-pointer" onClick={() => navigate("/appliedjobs")}>
-            <VscGitStashApply className="text-xl md:text-3xl" />
-          </div>
-          <div className="relative cursor-pointer" onClick={() => navigate("/savedjobs")}>
-            <FaRegBookmark className="text-xl md:text-3xl" />
-          </div>
+         {/* Applied Jobs Tooltip */}
+<div
+  className="tooltip tooltip-bottom"
+  data-tip="Applied Jobs"
+>
+  <div
+    className="relative cursor-pointer"
+    onClick={() => navigate("/appliedjobs")}
+  >
+    <VscGitStashApply className="text-xl md:text-3xl" />
+  </div>
+</div>
+
+{/* Saved Jobs Tooltip */}
+<div
+  className="tooltip tooltip-bottom"
+  data-tip="Saved Jobs"
+>
+  <div
+    className="relative cursor-pointer"
+    onClick={() => navigate("/savedjobs")}
+  >
+    <FaRegBookmark className="text-xl md:text-3xl" />
+  </div>
+</div>
+
           <div className="relative cursor-pointer" onClick={() => navigate("/notifications")}>
             <FaBell className="text-xl md:text-3xl" />
             <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-semibold shadow-sm">
