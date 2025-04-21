@@ -42,7 +42,7 @@ const SkillsForm = () => {
 
   return (
     <div className="relative max-w-3xl mx-auto mt-10">
-      <div className={`absolute -top-4 left-6 px-2 text-lg font-semibold text-gray-600   ${theme=="light"?"bg-purple-200":"bg-base-100"}`}>
+      <div className={`absolute -top-4 left-6 px-2 text-lg font-semibold   ${theme=="light"?"bg-purple-100":"bg-base-100"}`}>
         Skills
       </div>
       <div className="p-6 border-2 rounded-2xl">

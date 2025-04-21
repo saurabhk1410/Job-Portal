@@ -140,11 +140,11 @@ const JobCard = ({ job, onAction }) => {
 
 
         {/* Skills */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-3 sm:gap-x-8 gap-y-2">
           {job.skills.map((skill, i) => (
             <span
               key={i}
-              className="border-0 w-24 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge bg-purple-100 text-purple-800  gap-1.5 "
+              className="border-0 w-24 flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium badge bg-purple-100 text-purple-800"
             >
               {getSkillIcon(skill)}
               {skill}
@@ -175,7 +175,7 @@ const JobCard = ({ job, onAction }) => {
       {/* ✅ Job Posted Date – Bottom Left on Border */}
       <p
         className={`absolute -bottom-2.5 left-4 text-xs px-2 ${
-          theme == "light" ? "bg-purple-200" : "bg-base-100"
+          theme == "light" ? "bg-purple-100" : "bg-base-100"
         }`}
       >
         Posted {job.postedDate}

@@ -27,7 +27,7 @@ const FloatingInput = ({
         required={required}
         placeholder=" "
         autoComplete="off"
-        className={`input input-bordered w-full peer placeholder-transparent focus:outline-none ${className}   ${theme=="light"?"bg-purple-200":"bg-base-100"}`}
+        className={`input input-bordered w-full peer placeholder-transparent focus:outline-none ${className}   ${theme=="light"?"bg-purple-100":"bg-base-100"}`}
         {...rest}
       />
       <label
@@ -41,7 +41,7 @@ const FloatingInput = ({
           peer-focus:text-base-content
           font-light
           cursor-text
-          ${theme=="light"?"bg-purple-200":"bg-base-100"}
+          ${theme=="light"?"bg-purple-100":"bg-base-100"}
         `}
       >
         {label}

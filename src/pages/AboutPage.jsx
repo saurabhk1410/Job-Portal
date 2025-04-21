@@ -1,8 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FiTarget, FiUsers, FiZap, FiCode, FiAward } from "react-icons/fi";
-
+import { useTheme } from "../context/ThemeContext";
 const AboutPage = ({colormode}) => {
+  const {theme}=useTheme();
  console.log(colormode);
  
   const fadeIn = {
@@ -66,22 +67,22 @@ const AboutPage = ({colormode}) => {
         className="mb-16"
       >
         <div className="flex items-start gap-4 mb-6">
-          <div className="p-3 bg-purple-100 rounded-lg text-purple-600">
+          <div className="p-3  rounded-lg text-purple-600">
             <FiUsers className="text-2xl" />
           </div>
           <h2 className="text-2xl font-semibold text-gray-800 pt-1">Who We Help</h2>
         </div>
         
         <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="p-6 rounded-xl border hover:shadow-md transition-shadow">
             <h3 className="font-bold text-lg mb-2 text-gray-800">👩‍💻 Job Seekers</h3>
             <p className="text-gray-600">Discover full-time and part-time opportunities that match your skills</p>
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+          <div className=" p-6 rounded-xl border hover:shadow-md transition-shadow">
             <h3 className="font-bold text-lg mb-2 text-gray-800">🎓 Interns</h3>
             <p className="text-gray-600">Find remote/on-site internships with verified companies</p>
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+          <div className=" p-6 rounded-xl border hover:shadow-md transition-shadow">
             <h3 className="font-bold text-lg mb-2 text-gray-800">🏢 Employers</h3>
             <p className="text-gray-600">Reach passionate and skilled developers with ease</p>
           </div>
@@ -101,7 +102,7 @@ const AboutPage = ({colormode}) => {
           {features.map((feature, index) => (
             <div 
               key={index}
-              className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col items-center text-center"
+              className=" p-6 rounded-xl  border  hover:shadow-md transition-shadow flex flex-col items-center text-center"
             >
               <div className="p-3 bg-indigo-100 rounded-lg text-indigo-600 mb-4">
                 {feature.icon}

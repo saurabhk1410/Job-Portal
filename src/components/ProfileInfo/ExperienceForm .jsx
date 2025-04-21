@@ -80,7 +80,7 @@ const ExperienceForm = () => {
 
   return (
     <div className="relative max-w-3xl mx-auto mt-10">
-      <div className={`absolute -top-4 left-6 px-2 text-lg font-semibold text-gray-600 ${theme=="light"?"bg-purple-200":"bg-base-100"}`}>
+      <div className={`absolute -top-4 left-6 px-2 text-lg font-semibold  ${theme=="light"?"bg-purple-100":"bg-base-100"}`}>
         Experience
       </div>
       <div className="p-6 border-2 rounded-2xl">
@@ -105,17 +105,20 @@ const ExperienceForm = () => {
 <div>
   <div className="flex gap-0">
     {["Offline", "Online", "Hybrid"].map((mode) => (
-      <button
-        key={mode}
-        type="button"
-        onClick={() => handleChange({ target: { name: "mode", value: mode } })}
-        className={`px-4 py-2 cursor-pointer border transition-colors duration-200
-          ${form.mode === mode
-            ? "bg-primary text-white border-primary"
-            : "bg-base-200 text-base-content border-base-300 hover:bg-base-300"}`}
-      >
-        {mode}
-      </button>
+   <button
+   key={mode}
+   type="button"
+   onClick={() => handleChange({ target: { name: "mode", value: mode } })}
+   className={`px-4 py-2 cursor-pointer border transition-colors duration-200
+     ${
+       form.mode === mode
+         ? "bg-neutral text-white border-0"
+         : `${theme === "light" ? "bg-purple-100" : "bg-base-200"} text-base-content hover:bg-base-300`
+     }`}
+ >
+   {mode}
+ </button>
+ 
     ))}
   </div>
 </div>
@@ -130,8 +133,9 @@ const ExperienceForm = () => {
         onClick={() => setForm((prev) => ({ ...prev, type }))}
         className={`px-4 py-2 cursor-pointer border transition-colors duration-200
           ${form.type === type
-            ? "bg-primary text-white border-primary"
-            : "bg-base-200 text-base-content border-base-300 hover:bg-base-300"}`}
+            ? "bg-neutral text-white border-0"
+            : `${theme === "light" ? "bg-purple-100" : "bg-base-200"} text-base-content hover:bg-base-300`
+            }`}
       >
         {type}
       </button>

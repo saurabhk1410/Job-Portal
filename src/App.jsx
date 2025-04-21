@@ -22,7 +22,7 @@ const App = () => {
   return (
     <Router>
       <div
-className={`min-h-screen pt-24 ${theme === "light" ? "bg-purple-200" : "bg-base-100"}`}>
+className={`min-h-screen pt-24 ${theme === "light" ? "bg-purple-100" : "bg-base-100"}`}>
 <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />

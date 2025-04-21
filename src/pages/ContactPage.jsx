@@ -41,7 +41,7 @@ const ContactPage = () => {
       transition={{ duration: 0.5 }} 
       className="relative max-w-4xl sm:mx-auto mt-10 mx-2"
     >
-      <p className={`absolute -top-3 left-6 ${theme=="light"?"bg-purple-200":"bg-base-100"} px-4 text-xl font-sans z-10`}>
+      <p className={`absolute -top-3 left-6 ${theme=="light"?"bg-purple-100":"bg-base-100"} px-4 text-xl font-sans z-10`}>
         Contact Us
       </p>
 
@@ -76,7 +76,7 @@ const ContactPage = () => {
       <textarea
         name="message"
         rows="5"
-        className={`${theme=="light"?"bg-purple-200":"bg-base-100"} textarea textarea-bordered w-full peer pt-6 resize-none focus:outline-0`}
+        className={`${theme=="light"?"bg-purple-100":"bg-base-100"} textarea textarea-bordered w-full peer pt-6 resize-none focus:outline-0`}
         placeholder=" "
         value={formData.message}
         onChange={handleChange}

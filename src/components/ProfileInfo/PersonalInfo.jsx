@@ -88,7 +88,7 @@ const UserCardForm = () => {
     onSubmit={handleSubmit}
     className="border-2 rounded-2xl p-6 pt-10 font-semibold"
   >
-    <span className={`absolute -top-4 left-6   ${theme=="light"?"bg-purple-200":"bg-base-100"} px-2 text-lg font-semibold text-gray-600`}>
+    <span className={`absolute -top-4 left-6   ${theme=="light"?"bg-purple-100":"bg-base-100"} px-2 text-lg font-semibold `}>
       Personal Info
     </span>
       <div className="flex flex-col items-center mb-4">

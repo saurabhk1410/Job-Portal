@@ -91,10 +91,7 @@ const Notifications = () => {
       initial="hidden"
       animate="visible"
     >
-      <div className="flex items-center gap-2 mb-6">
-        <BellIcon className="w-6 h-6 text-primary" />
-        <h2 className="text-3xl font-bold">Notifications</h2>
-      </div>
+     
 
       {/* Filter Buttons */}
       <div className="flex gap-3 mb-6">
