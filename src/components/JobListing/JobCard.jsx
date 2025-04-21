@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import {
   FaMapMarkerAlt,
@@ -100,7 +101,7 @@ const JobCard = ({ job, onAction }) => {
   return (
 <div className="relative card transition-all duration-200 border-2 rounded-lg p-6 w-full max-w-[350px] mx-auto">
 {/* ✅ Save Icon Top Right */}
-      <div className="tooltip absolute top-3 right-3 z-10" data-tip={isSaved ? "Unsave" : "Save"}>
+      <div className="tooltip absolute -top-0.5  right-3 z-10" data-tip={isSaved ? "Unsave" : "Save"}>
         <button className="cursor-pointer" onClick={handleSaveToggle}>
           {isSaved ? <FaBookmark className="text-xl" /> : <FaRegBookmark className="text-xl" />}
         </button>

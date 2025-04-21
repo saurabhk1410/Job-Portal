@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { motion } from "framer-motion";
 import {
@@ -102,10 +103,10 @@ const LandingPage = () => {
             transition={{ delay: 0.2 }}
             className="flex flex-col sm:flex-row gap-4 justify-center mt-20"
           >
-            <button className="btn btn-neutral px-8 py-6 text-lg font-medium">
+            <button className="btn btn-neutral px-8 py-6 text-lg font-medium" onClick={()=>navigate("/jobs")}>
               Browse Jobs
             </button>
-            <button className="btn btn-outline px-8 py-6 text-lg font-medium">
+            <button className="btn btn-outline px-8 py-6 text-lg font-medium" onClick={()=>navigate("/about")}>
               How It Works
             </button>
           </motion.div>
@@ -262,7 +263,7 @@ const LandingPage = () => {
                 animate="visible"
                 variants={fadeIn}
                 transition={{ delay: 0.1 * index }}
-                className=" p-8 rounded-xl border border-2"
+                className=" p-8 rounded-xl border-2"
               >
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (

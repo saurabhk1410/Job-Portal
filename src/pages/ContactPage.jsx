@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import FloatingInput from "../components/ProfileInfo/FloatingInput";
@@ -82,7 +83,7 @@ const ContactPage = () => {
         onChange={handleChange}
         required
       ></textarea>
-      <label className="absolute left-3 top-2.5 text-sm text-gray-500 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2.5 peer-focus:text-sm peer-focus:text-base">
+      <label className="absolute left-3 top-2.5 text-sm text-gray-500 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:top-2.5 peer-focus:text-base">
         Your Message
       </label>
     </div>

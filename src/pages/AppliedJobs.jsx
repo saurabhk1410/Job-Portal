@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import jobsData from "../components/JobListing/jobsData";
 import JobCard from "../components/JobListing/JobCard";

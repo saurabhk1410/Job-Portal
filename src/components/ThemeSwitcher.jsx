@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {  FaSun } from "react-icons/fa";
 import { GoMoon } from "react-icons/go";
 import AboutPage from "../pages/AboutPage";
@@ -12,7 +12,7 @@ console.log(theme);
     const saved = localStorage.getItem("theme") || "light";
     setTheme(saved);
     document.documentElement.setAttribute("data-theme", saved);
-  }, []);
+  },);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import JobCard from "../components/JobListing/JobCard";
 import jobsData from "../components/JobListing/jobsData";
