@@ -1,7 +1,7 @@
 import React from "react";
 import ThemeSwitcher from "./ThemeSwitcher";
 import NavHeader from "./NavHeader";
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaUser, FaSignOutAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { SiCodecrafters } from "react-icons/si";
 import { FaRegBookmark } from "react-icons/fa";
@@ -10,10 +10,17 @@ import { VscGitStashApply } from "react-icons/vsc";
 import { useNavigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <>
@@ -39,38 +46,59 @@ const Navbar = () => {
         </div>
         
         <div className="flex items-center gap-4 md:gap-8">
-         {/* Applied Jobs Tooltip */}
-<div
-  className="tooltip tooltip-bottom"
-  data-tip="Applied Jobs"
->
-  <div
-    className="relative cursor-pointer"
-    onClick={() => navigate("/appliedjobs")}
-  >
-    <VscGitStashApply className="text-xl md:text-3xl" />
-  </div>
-</div>
+          {user ? (
+            <>
+              {/* Applied Jobs Tooltip */}
+              <div className="tooltip tooltip-bottom" data-tip="Applied Jobs">
+                <div className="relative cursor-pointer" onClick={() => navigate("/appliedjobs")}>
+                  <VscGitStashApply className="text-xl md:text-3xl" />
+                </div>
+              </div>
 
-{/* Saved Jobs Tooltip */}
-<div
-  className="tooltip tooltip-bottom"
-  data-tip="Saved Jobs"
->
-  <div
-    className="relative cursor-pointer"
-    onClick={() => navigate("/savedjobs")}
-  >
-    <FaRegBookmark className="text-xl md:text-3xl" />
-  </div>
-</div>
+              {/* Saved Jobs Tooltip */}
+              <div className="tooltip tooltip-bottom" data-tip="Saved Jobs">
+                <div className="relative cursor-pointer" onClick={() => navigate("/savedjobs")}>
+                  <FaRegBookmark className="text-xl md:text-3xl" />
+                </div>
+              </div>
 
-          <div className="relative cursor-pointer" onClick={() => navigate("/notifications")}>
-            <FaBell className="text-xl md:text-3xl" />
-            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-semibold shadow-sm">
-              5
-            </span>
-          </div>
+              <div className="relative cursor-pointer" onClick={() => navigate("/notifications")}>
+                <FaBell className="text-xl md:text-3xl" />
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-semibold shadow-sm">
+                  5
+                </span>
+              </div>
+
+              {/* Profile Tooltip */}
+              <div className="tooltip tooltip-bottom" data-tip="Profile">
+                <div className="relative cursor-pointer" onClick={() => navigate("/profile")}>
+                  <FaUser className="text-xl md:text-3xl" />
+                </div>
+              </div>
+
+              {/* Logout Tooltip */}
+              <div className="tooltip tooltip-bottom" data-tip="Logout">
+                <div className="relative cursor-pointer" onClick={handleLogout}>
+                  <FaSignOutAlt className="text-xl md:text-3xl" />
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center gap-4">
+              <Link
+                to="/login"
+                className="px-4 py-2 text-sm font-medium text-purple-600 hover:text-purple-700"
+              >
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                className="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700"
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
           <ThemeSwitcher />
         </div>
       </nav>
@@ -80,6 +108,22 @@ const Navbar = () => {
         <div className="fixed top-16 left-0 w-full z-40 backdrop-blur bg-[rgba(255,255,255,0.8)] dark:bg-[rgba(23,23,23,0.8)] md:hidden border-t border-gray-200 dark:border-gray-700">
           <div className="px-4 py-2">
             <NavHeader mobile />
+            {!user && (
+              <div className="flex flex-col gap-2 mt-4">
+                <Link
+                  to="/login"
+                  className="px-4 py-2 text-sm font-medium text-purple-600 hover:text-purple-700"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700"
+                >
+                  Sign Up
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       )}

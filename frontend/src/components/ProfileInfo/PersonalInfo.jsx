@@ -3,199 +3,218 @@ import { FaUser } from "react-icons/fa";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 import FloatingInput from "./FloatingInput"; // adjust path if needed
 import { useTheme } from "../../context/ThemeContext";
-const UserCardForm = () => {
-  const {theme}=useTheme();
-  const [profilePhoto, setProfilePhoto] = useState(null);
-  const [name, setName] = useState("");
-  const [dob, setDob] = useState("");
-  const [gender, setGender] = useState("");
-  const [email, setEmail] = useState("");
-  const [linkedIn, setLinkedIn] = useState("");
-  const [resumeUrl, setResumeUrl] = useState("");
-  const [phone, setPhone] = useState("");
-  const [location, setLocation] = useState("");
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64 = reader.result;
-        setProfilePhoto(base64);
-        localStorage.setItem("profilePhoto", base64); // ✅ Save to localStorage
-      };
-      reader.readAsDataURL(file);
+const PersonalInfo = ({ user, onUserUpdate }) => {
+  const { theme } = useTheme();
+  const [form, setForm] = useState({
+    name: "",
+    dob: "",
+    gender: "",
+    email: "",
+    linkedIn: "",
+    resumeUrl: "",
+    phone: "",
+    location: "",
+  });
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  // Initialize state from user prop
+  useEffect(() => {
+    if (user) {
+      setForm({
+        name: user.name || "",
+        dob: user.dob ? user.dob.slice(0, 10) : "",
+        gender: user.gender || "",
+        email: user.email || "",
+        linkedIn: user.linkedIn || "",
+        resumeUrl: user.resumeUrl || "",
+        phone: user.phone || "",
+        location: user.location || "",
+      });
     }
+  }, [user]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem("userData"));
-
-    if (savedData) {
-      setProfilePhoto(savedData.profilePhoto || null);
-      setName(savedData.name || "");
-      setDob(savedData.dob || "");
-      setGender(savedData.gender || "");
-      setEmail(savedData.email || "");
-      setLinkedIn(savedData.linkedIn || "");
-      setResumeUrl(savedData.resumeUrl || "");
-      setPhone(savedData.phone || "");
-      setLocation(savedData.location || "");
-    }
-  }, []);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
 
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      alert("Invalid email format");
+    // Validation
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+      setError("Invalid email format");
       return;
     }
-    if (!linkedIn.startsWith("https://linkedin.com")) {
-      alert("LinkedIn URL must start with https://linkedin.com/");
+    if (form.linkedIn && !form.linkedIn.startsWith("https://linkedin.com")) {
+      setError("LinkedIn URL must start with https://linkedin.com/");
       return;
     }
-    if (!/^https?:\/\//.test(resumeUrl)) {
-      alert("Resume URL must start with http:// or https://");
+    if (form.resumeUrl && !/^https?:\/\//.test(form.resumeUrl)) {
+      setError("Resume URL must start with http:// or https://");
       return;
     }
-    if (!/^\+?\d{10,15}$/.test(phone)) {
-      alert(
-        "Phone number must be valid with country code (e.g. +919876543210)"
-      );
+    if (!/^\+?\d{10,15}$/.test(form.phone)) {
+      setError("Phone number must be valid with country code (e.g. +919876543210)");
       return;
     }
 
-    const userData = {
-      profilePhoto,
-      name,
-      dob,
-      gender,
-      email,
-      linkedIn,
-      resumeUrl,
-      phone,
-      location,
-    };
+    // Only send changed fields
+    const changedFields = {};
+    Object.keys(form).forEach((key) => {
+      if (form[key] !== (user[key] || "")) {
+        changedFields[key] = form[key];
+      }
+    });
+    if (Object.keys(changedFields).length === 0) {
+      setSuccess("No changes to save.");
+      return;
+    }
 
-    localStorage.setItem("userData", JSON.stringify(userData)); // ✅ Save everything
-    alert("Saved successfully!");
+    setSaving(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("/api/profile", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(changedFields),
+      });
+      if (!res.ok) throw new Error("Failed to update profile");
+      onUserUpdate(changedFields);
+      setSuccess("Profile updated successfully!");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
-<div className="relative max-w-3xl mx-auto mt-6">
-  <form
-    onSubmit={handleSubmit}
-    className="border-2 rounded-2xl p-6 pt-10 font-semibold"
-  >
-    <span className={`absolute -top-4 left-6   ${theme=="light"?"bg-purple-100":"bg-base-100"} px-2 text-lg font-semibold `}>
-      Personal Info
-    </span>
-      <div className="flex flex-col items-center mb-4">
-        {/* Uploadable Profile Photo */}
-        <label htmlFor="photo-upload" className="cursor-pointer relative group">
-          {profilePhoto ? (
-            <img
-              src={profilePhoto}
-              alt="Profile"
-              className="w-20 h-20 object-cover rounded-full border-2"
-            />
-          ) : (
+    <div className="relative max-w-3xl mx-auto mt-6">
+      <form
+        onSubmit={handleSubmit}
+        className="border-2 rounded-2xl p-6 pt-10 font-semibold"
+      >
+        <span
+          className={`absolute -top-4 left-6   ${theme === "light" ? "bg-purple-100" : "bg-base-100"} px-2 text-lg font-semibold `}
+        >
+          Personal Info
+        </span>
+        <div className="flex flex-col items-center mb-4">
+          {/* Uploadable Profile Photo */}
+          <label htmlFor="photo-upload" className="cursor-pointer relative group">
+            {/* Placeholder for profile photo */}
             <div className="w-20 h-20 flex items-center justify-center rounded-full border-2 bg-base-200 text-base-content">
               <FaUser className="text-5xl" />
             </div>
-          )}
-          <input
-            id="photo-upload"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-        </label>
+          </label>
 
-        {/* Gender */}
-        <div className="flex gap-2 items-center justify-center mt-4">
-          {["Male", "Female", "Other"].map((g) => (
-            <label key={g} className="cursor-pointer">
-              <input
-                type="radio"
-                name="gender"
-                value={g}
-                checked={gender === g}
-                onChange={(e) => setGender(e.target.value)}
-                className="hidden"
-              />
-              <span
-                className={`inline-block px-3 py-1 rounded-full text-sm transition ${
-                  gender === g
-                    ? "bg-primary text-primary-content"
-                    : "bg-base-200 text-base-content"
-                }`}
-              >
-                {g}
-              </span>
-            </label>
-          ))}
+          {/* Gender */}
+          <div className="flex gap-2 items-center justify-center mt-4">
+            {["Male", "Female", "Other"].map((g) => (
+              <label key={g} className="cursor-pointer">
+                <input
+                  type="radio"
+                  name="gender"
+                  value={g}
+                  checked={form.gender === g}
+                  onChange={handleChange}
+                  className="hidden"
+                />
+                <span
+                  className={`inline-block px-3 py-1 rounded-full text-sm transition ${
+                    form.gender === g
+                      ? "bg-primary text-primary-content"
+                      : "bg-base-200 text-base-content"
+                  }`}
+                >
+                  {g}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Form Inputs */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <FloatingInput
-          label="Full Name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        {/* Error/Success */}
+        {error && <div className="text-red-500 mb-2">{error}</div>}
+        {success && <div className="text-green-600 mb-2">{success}</div>}
 
-        <FloatingInput
-          label="Date Of Birth"
-          type="date"
-          value={dob}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <FloatingInput
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setName(e.target.value)}
-        />
+        {/* Form Inputs */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FloatingInput
+            label="Full Name"
+            type="text"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+          />
 
-        <FloatingInput
-          label="LinkedIn Profile URL"
-          type="url"
-          value={linkedIn}
-          onChange={(e) => setName(e.target.value)}
-        />
+          <FloatingInput
+            label="Date Of Birth"
+            type="date"
+            name="dob"
+            value={form.dob}
+            onChange={handleChange}
+          />
+          <FloatingInput
+            label="Email"
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+          />
 
-        <FloatingInput
-          label="Resume URL"
-          type="url"
-          value={resumeUrl}
-          onChange={(e) => setName(e.target.value)}
-        />
+          <FloatingInput
+            label="LinkedIn Profile URL"
+            type="url"
+            name="linkedIn"
+            value={form.linkedIn}
+            onChange={handleChange}
+          />
 
-        <FloatingInput
-          label="Phone Number (with country code)"
-          type="tel"
-          value={phone}
-          onChange={(e) => setName(e.target.value)}
-        />
+          <FloatingInput
+            label="Resume URL"
+            type="url"
+            name="resumeUrl"
+            value={form.resumeUrl}
+            onChange={handleChange}
+          />
 
-        <FloatingInput
-          label="Location (City, State, Country)"
-          type="text"
-          value={location}
-          onChange={(e) => setName(e.target.value)}
-        />
+          <FloatingInput
+            label="Phone Number (with country code)"
+            type="tel"
+            name="phone"
+            value={form.phone}
+            onChange={handleChange}
+          />
 
-        <button type="submit" className="btn btn-neutral col-span-full mt-2">
-          Save
-        </button>
-      </div>
-    </form>
+          <FloatingInput
+            label="Location (City, State, Country)"
+            type="text"
+            name="location"
+            value={form.location}
+            onChange={handleChange}
+          />
+
+          <button
+            type="submit"
+            className="btn btn-neutral col-span-full mt-2"
+            disabled={saving}
+          >
+            {saving ? "Saving..." : "Save"}
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
-export default UserCardForm;
+
+export default PersonalInfo;

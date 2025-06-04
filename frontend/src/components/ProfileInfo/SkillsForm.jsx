@@ -3,24 +3,49 @@ import { Star, Trash2 } from "lucide-react"; // Optional: for better icons
 import FloatingInput from "./FloatingInput";
 import { useTheme } from "../../context/ThemeContext";
 
-const SkillsForm = () => {
-  const {theme}=useTheme();
+const SkillsForm = ({ skills: initialSkills = [], onSkillsUpdate }) => {
+  const { theme } = useTheme();
   const [skillInput, setSkillInput] = useState("");
   const [rating, setRating] = useState(1);
   const [skills, setSkills] = useState([]);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    const savedSkills = JSON.parse(localStorage.getItem("skills"));
-    if (savedSkills) setSkills(savedSkills);
-  }, []);
+    setSkills(initialSkills);
+  }, [initialSkills]);
+
+  const patchSkills = async (updatedSkills) => {
+    setSaving(true);
+    setError("");
+    setSuccess("");
+    try {
+      const res = await fetch("http://localhost:5000/api/profile", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ skills: updatedSkills }),
+        credentials: 'include'
+      });
+      if (!res.ok) throw new Error("Failed to update skills");
+      setSkills(updatedSkills);
+      onSkillsUpdate(updatedSkills);
+      setSuccess("Skills updated!");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const handleAddSkill = () => {
     const trimmed = skillInput.trim();
     if (trimmed && !skills.some((s) => s.name === trimmed)) {
       const newSkill = { name: trimmed, rating };
       const updated = [...skills, newSkill];
-      setSkills(updated);
-      localStorage.setItem("skills", JSON.stringify(updated));
+      patchSkills(updated);
     }
     setSkillInput("");
     setRating(1);
@@ -28,21 +53,19 @@ const SkillsForm = () => {
 
   const handleRemoveSkill = (skillToRemove) => {
     const updated = skills.filter((s) => s.name !== skillToRemove);
-    setSkills(updated);
-    localStorage.setItem("skills", JSON.stringify(updated));
+    patchSkills(updated);
   };
 
   const handleRatingChange = (skillName, newRating) => {
     const updated = skills.map((s) =>
       s.name === skillName ? { ...s, rating: newRating } : s
     );
-    setSkills(updated);
-    localStorage.setItem("skills", JSON.stringify(updated));
+    patchSkills(updated);
   };
 
   return (
     <div className="relative max-w-3xl mx-auto mt-10">
-      <div className={`absolute -top-4 left-6 px-2 text-lg font-semibold   ${theme=="light"?"bg-purple-100":"bg-base-100"}`}>
+      <div className={`absolute -top-4 left-6 px-2 text-lg font-semibold   ${theme == "light" ? "bg-purple-100" : "bg-base-100"}`}>
         Skills
       </div>
       <div className="p-6 border-2 rounded-2xl">
@@ -75,11 +98,12 @@ const SkillsForm = () => {
             </div>
           </div>
 
-          <button className="btn btn-neutral w-40" onClick={handleAddSkill}>
-            Add Skill
+          <button className="btn btn-neutral w-40" onClick={handleAddSkill} disabled={saving}>
+            {saving ? "Saving..." : "Add Skill"}
           </button>
         </div>
-
+        {error && <div className="text-red-500 mb-2">{error}</div>}
+        {success && <div className="text-green-600 mb-2">{success}</div>}
         {skills.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2 font-semibold">
             {skills.map((skill, index) => (
@@ -112,6 +136,7 @@ const SkillsForm = () => {
                     className="btn btn-error btn-sm btn-square hover:scale-110 transition-transform duration-150"
                     onClick={() => handleRemoveSkill(skill.name)}
                     title="Remove"
+                    disabled={saving}
                   >
                     <Trash2 size={16} />
                   </button>

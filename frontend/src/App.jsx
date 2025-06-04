@@ -15,26 +15,68 @@ import { useTheme } from "./context/ThemeContext";
 import SavedJobs from "./pages/SavedJobs";
 import AppliedJobs from "./pages/AppliedJobs";
 import Notifications from "./pages/Notifications";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
-const App = () => {
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+  return children;
+};
+
+const AppContent = () => {
   const { theme } = useTheme();
+  const { user } = useAuth();
 
   return (
+    <div className={`min-h-screen pt-24 ${theme === "light" ? "bg-purple-100" : "bg-base-100"}`}>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/profile" />} />
+        <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/profile" />} />
+        <Route path="/jobs" element={
+          <ProtectedRoute>
+            <JobListings />
+          </ProtectedRoute>
+        } />
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/savedjobs" element={
+          <ProtectedRoute>
+            <SavedJobs />
+          </ProtectedRoute>
+        } />
+        <Route path="/appliedjobs" element={
+          <ProtectedRoute>
+            <AppliedJobs />
+          </ProtectedRoute>
+        } />
+        <Route path="/notifications" element={
+          <ProtectedRoute>
+            <Notifications />
+          </ProtectedRoute>
+        } />
+      </Routes>
+    </div>
+  );
+};
+
+const App = () => {
+  return (
     <Router>
-      <div
-className={`min-h-screen pt-24 ${theme === "light" ? "bg-purple-100" : "bg-base-100"}`}>
-<Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/jobs" element={<JobListings />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/savedjobs" element={<SavedJobs />} />
-          <Route path="/appliedjobs" element={<AppliedJobs />} />
-          <Route path="/notifications" element={<Notifications />} />
-        </Routes>
-      </div>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </Router>
   );
 };
