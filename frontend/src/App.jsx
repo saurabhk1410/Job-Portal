@@ -18,6 +18,9 @@ import Notifications from "./pages/Notifications";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import AdminLogin from "./pages/Admin/AdminLogin";
+import AdminSignup from "./pages/Admin/AdminSignup";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -66,6 +69,9 @@ const AppContent = () => {
             <Notifications />
           </ProtectedRoute>
         } />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/signup" element={<AdminSignup />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
     </div>
   );

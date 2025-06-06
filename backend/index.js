@@ -6,6 +6,8 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import User from "./models/User.js";
 import auth from "./middleware/auth.js";
+import Admin from "./models/Admin.js";
+import Job from "./models/Job.js";
 
 dotenv.config();
 
@@ -116,6 +118,114 @@ app.patch('/api/profile', auth, async (req, res) => {
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
+});
+
+// Admin Signup
+app.post('/api/admin/signup', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const admin = new Admin({ username, password });
+        await admin.save();
+        res.status(201).json({ message: 'Admin created successfully' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Admin Login
+app.post('/api/admin/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        console.log(username, password);
+        const admin = await Admin.findOne({ username });
+        if (!admin) throw new Error('Invalid credentials');
+        const isMatch = await admin.comparePassword(password);
+        if (!isMatch) throw new Error('Invalid credentials');
+        // For simplicity, use a different token for admin
+        const token = jwt.sign({ _id: admin._id, isAdmin: true }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        res.cookie('adminToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+        res.json({ message: 'Admin logged in' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Admin creates a job
+app.post('/api/admin/jobs', async (req, res) => {
+    try {
+        const job = new Job(req.body);
+        await job.save();
+        res.status(201).json({ job });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Admin gets all jobs with applicants' details
+app.get('/api/admin/jobs', async (req, res) => {
+    try {
+        const jobs = await Job.find().populate('applicants');
+        res.json(jobs);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// User fetches jobs they have NOT applied for
+app.get('/api/jobs', auth, async (req, res) => {
+    try {
+        const jobs = await Job.find({ applicants: { $ne: req.user._id } });
+        res.json(jobs);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// User fetches jobs they HAVE applied for
+app.get('/api/jobs/applied', auth, async (req, res) => {
+    try {
+        const jobs = await Job.find({ applicants: req.user._id });
+        res.json(jobs);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// User applies for a job
+app.post('/api/jobs/:jobId/apply', auth, async (req, res) => {
+    try {
+        const job = await Job.findById(req.params.jobId);
+        if (!job) return res.status(404).json({ error: 'Job not found' });
+        if (job.applicants.includes(req.user._id)) {
+            return res.status(400).json({ error: 'Already applied' });
+        }
+        job.applicants.push(req.user._id);
+        await job.save();
+        res.json({ message: 'Applied successfully' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+// Admin Auth Check
+app.get('/api/admin/auth/check', (req, res) => {
+    const token = req.cookies.adminToken;
+    if (!token) return res.json({ isAuthenticated: false });
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (decoded.isAdmin) {
+            return res.json({ isAuthenticated: true });
+        }
+        return res.json({ isAuthenticated: false });
+    } catch (err) {
+        return res.json({ isAuthenticated: false });
+    }
+});
+
+// Admin Logout
+app.post('/api/admin/logout', (req, res) => {
+    res.cookie('adminToken', '', { httpOnly: true, expires: new Date(0) });
+    res.status(200).json({ message: 'Admin logged out successfully' });
 });
 
 const PORT = process.env.PORT || 5000;

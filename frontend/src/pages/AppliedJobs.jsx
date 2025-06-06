@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import jobsData from "../components/JobListing/jobsData";
 import JobCard from "../components/JobListing/JobCard";
-import { getFromLocalStorage } from "../utils/localStorageHelpers";
+import axios from "axios";
 import { motion } from "framer-motion";
 
 const containerVariants = {
@@ -24,17 +23,24 @@ const itemVariants = {
 
 const AppliedJobs = () => {
   const [appliedJobs, setAppliedJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const refreshAppliedJobs = () => {
-    const AppliedIds = getFromLocalStorage("appliedJobs");
-    const filteredJobs = jobsData.filter((job) => AppliedIds.includes(job.id));
-    setAppliedJobs(filteredJobs);
+  const fetchAppliedJobs = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await axios.get("http://localhost:5000/api/jobs/applied", { withCredentials: true });
+      setAppliedJobs(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      setError("Failed to fetch applied jobs");
+      setAppliedJobs([]);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
-    refreshAppliedJobs();
-    window.addEventListener("appliedJobsChanged", refreshAppliedJobs);
-    return () => window.removeEventListener("appliedJobsChanged", refreshAppliedJobs);
+    fetchAppliedJobs();
   }, []);
 
   return (
@@ -45,17 +51,23 @@ const AppliedJobs = () => {
       animate="visible"
     >
       <h1 className="text-3xl font-bold mb-6">Applied Jobs</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {appliedJobs.length > 0 ? (
-          appliedJobs.map((job) => (
-            <motion.div key={job.id} variants={itemVariants}>
-              <JobCard job={job} />
-            </motion.div>
-          ))
-        ) : (
-          <p>No Applied jobs yet.</p>
-        )}
-      </div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-red-500">{error}</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {Array.isArray(appliedJobs) && appliedJobs.length > 0 ? (
+            appliedJobs.map((job) => (
+              <motion.div key={job._id} variants={itemVariants}>
+                <JobCard job={job} forceApplied />
+              </motion.div>
+            ))
+          ) : (
+            <p>No Applied jobs yet.</p>
+          )}
+        </div>
+      )}
     </motion.div>
   );
 };

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   FiSearch,
@@ -12,9 +12,9 @@ import {
 } from "react-icons/fi";
 
 import { useNavigate } from "react-router-dom";
-import jobsData from "../components/JobListing/jobsData";
 import { containerVariants, itemVariants } from "./JobListings";
 import JobCard from "../components/JobListing/JobCard";
+import axios from "axios";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -23,32 +23,25 @@ const LandingPage = () => {
     visible: { opacity: 1, y: 0 },
   };
 
-  const featuredJobs = [
-    {
-      title: "Frontend Developer (React)",
-      company: "TechCorp",
-      type: "Full-time",
-      location: "Remote",
-      salary: "$90,000 - $120,000",
-      skills: ["React", "TypeScript", "CSS"],
-    },
-    {
-      title: "Backend Engineer",
-      company: "DataSystems",
-      type: "Full-time",
-      location: "San Francisco, CA",
-      salary: "$110,000 - $140,000",
-      skills: ["Node.js", "Python", "AWS"],
-    },
-    {
-      title: "UX/UI Designer",
-      company: "CreativeMinds",
-      type: "Contract",
-      location: "Remote",
-      salary: "$70 - $90/hr",
-      skills: ["Figma", "Sketch", "User Research"],
-    },
-  ];
+  const [featuredJobs, setFeaturedJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const res = await axios.get("/api/jobs", { withCredentials: true });
+        setFeaturedJobs(Array.isArray(res.data) ? res.data.slice(0, 3) : []);
+      } catch (err) {
+        setFeaturedJobs([]);
+        setError("Failed to fetch jobs");
+      }
+      setLoading(false);
+    };
+    fetchJobs();
+  }, []);
 
   const testimonials = [
     {
@@ -212,20 +205,30 @@ const LandingPage = () => {
             Curated selection of high-quality tech jobs
           </motion.p>
 
-          <motion.div
-            className="container mx-auto px-4 sm:px-6 lg:px-0 py-6"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ">
-              {jobsData.slice(0, 3).map((job) => (
-                <motion.div key={job.id} variants={itemVariants}>
-                  <JobCard job={job} />
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+          {loading ? (
+            <p className="text-center">Loading...</p>
+          ) : error ? (
+            <p className="text-center text-red-500">{error}</p>
+          ) : (
+            <motion.div
+              className="container mx-auto px-4 sm:px-6 lg:px-0 py-6"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ">
+                {Array.isArray(featuredJobs) && featuredJobs.length > 0 ? (
+                  featuredJobs.map((job) => (
+                    <motion.div key={job._id} variants={itemVariants}>
+                      <JobCard job={job} />
+                    </motion.div>
+                  ))
+                ) : (
+                  <p className="text-center col-span-3">No featured jobs available.</p>
+                )}
+              </div>
+            </motion.div>
+          )}
 
           <motion.div
             initial="hidden"

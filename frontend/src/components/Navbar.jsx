@@ -11,15 +11,37 @@ import { useNavigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const { user, logout } = useAuth();
 
+  const [isUser, setIsUser] = React.useState(false);
+  const [isAdmin, setIsAdmin] = React.useState(false);
+
+  React.useEffect(() => {
+    // Check user auth
+    axios.get("http://localhost:5000/api/auth/check", { withCredentials: true })
+      .then(res => setIsUser(res.data.isAuthenticated))
+      .catch(() => setIsUser(false));
+    // Check admin auth
+    axios.get("http://localhost:5000/api/admin/auth/check", { withCredentials: true })
+      .then(res => setIsAdmin(res.data.isAuthenticated))
+      .catch(() => setIsAdmin(false));
+  }, []);
+
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const handleAdminLogout = async () => {
+    try {
+      await axios.post('http://localhost:5000/api/admin/logout', {}, { withCredentials: true });
+    } catch (err) {}
+    window.location.href = '/admin/login';
   };
 
   return (
@@ -46,7 +68,9 @@ const Navbar = () => {
         </div>
         
         <div className="flex items-center gap-4 md:gap-8">
-          {user ? (
+          {isAdmin ? (
+            <button onClick={handleAdminLogout} className="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700">Logout</button>
+          ) : isUser ? (
             <>
               {/* Applied Jobs Tooltip */}
               <div className="tooltip tooltip-bottom" data-tip="Applied Jobs">
@@ -56,18 +80,18 @@ const Navbar = () => {
               </div>
 
               {/* Saved Jobs Tooltip */}
-              <div className="tooltip tooltip-bottom" data-tip="Saved Jobs">
+              {/* <div className="tooltip tooltip-bottom" data-tip="Saved Jobs">
                 <div className="relative cursor-pointer" onClick={() => navigate("/savedjobs")}>
                   <FaRegBookmark className="text-xl md:text-3xl" />
                 </div>
-              </div>
+              </div> */}
 
-              <div className="relative cursor-pointer" onClick={() => navigate("/notifications")}>
+              {/* <div className="relative cursor-pointer" onClick={() => navigate("/notifications")}>
                 <FaBell className="text-xl md:text-3xl" />
                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-semibold shadow-sm">
                   5
                 </span>
-              </div>
+              </div> */}
 
               {/* Profile Tooltip */}
               <div className="tooltip tooltip-bottom" data-tip="Profile">
@@ -108,7 +132,7 @@ const Navbar = () => {
         <div className="fixed top-16 left-0 w-full z-40 backdrop-blur bg-[rgba(255,255,255,0.8)] dark:bg-[rgba(23,23,23,0.8)] md:hidden border-t border-gray-200 dark:border-gray-700">
           <div className="px-4 py-2">
             <NavHeader mobile />
-            {!user && (
+            {!user && !isAdmin && (
               <div className="flex flex-col gap-2 mt-4">
                 <Link
                   to="/login"
@@ -123,6 +147,9 @@ const Navbar = () => {
                   Sign Up
                 </Link>
               </div>
+            )}
+            {isAdmin && (
+              <button onClick={handleAdminLogout} className="w-full mt-4 px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700">Logout</button>
             )}
           </div>
         </div>

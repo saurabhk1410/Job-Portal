@@ -1,12 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import JobCard from "../components/JobListing/JobCard";
-import jobsData from "../components/JobListing/jobsData";
 import { FiFilter, FiX } from "react-icons/fi"; // Importing icons from react-icons
 import { FaFilter } from "react-icons/fa";
 import { MdFilterAltOff } from "react-icons/md";
+import axios from "axios";
 
 export const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -28,25 +28,44 @@ export const itemVariants = {
 const ITEMS_PER_PAGE = 6;
 
 const JobListings = () => {
-  const [visibleJobs, setVisibleJobs] = React.useState([]);
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const [searchInput, setSearchInput] = React.useState("");
-  const [selectedSkills, setSelectedSkills] = React.useState([]);
-  const [filters, setFilters] = React.useState({
+  const [allJobs, setAllJobs] = useState([]);
+  const [visibleJobs, setVisibleJobs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchInput, setSearchInput] = useState("");
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  const [filters, setFilters] = useState({
     workMode: "",
     employmentType: "",
     category: ""
   });
-  const [showFilters, setShowFilters] = React.useState(false); // State for toggle
+  const [showFilters, setShowFilters] = useState(false); // State for toggle
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const res = await axios.get("http://localhost:5000/api/jobs", { withCredentials: true });
+        setAllJobs(Array.isArray(res.data) ? res.data : []);
+      } catch (err) {
+        setError("Failed to fetch jobs");
+        setAllJobs([]);
+      }
+      setLoading(false);
+    };
+    fetchJobs();
+  }, []);
 
   const refreshVisibleJobs = () => {
     const saved = JSON.parse(localStorage.getItem("savedJobs")) || [];
     const applied = JSON.parse(localStorage.getItem("appliedJobs")) || [];
-  
-    let filtered = jobsData.filter(
-      (job) => !saved.includes(job.id) && !applied.includes(job.id)
+
+    let filtered = allJobs.filter(
+      (job) => !saved.includes(job._id) && !applied.includes(job._id)
     );
-  
+
     // Apply search and skill filters
     if (selectedSkills.length > 0) {
       filtered = filtered.filter(job =>
@@ -57,7 +76,7 @@ const JobListings = () => {
         )
       );
     }
-  
+
     // Apply dropdown filters
     if (filters.workMode) {
       filtered = filtered.filter(job => job.workMode === filters.workMode);
@@ -68,12 +87,12 @@ const JobListings = () => {
     if (filters.category) {
       filtered = filtered.filter(job => job.category === filters.category);
     }
-  
+
     setVisibleJobs(filtered);
     setCurrentPage(1); // Reset to first page when filters change
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     refreshVisibleJobs();
     window.addEventListener("savedJobsChanged", refreshVisibleJobs);
     window.addEventListener("appliedJobsChanged", refreshVisibleJobs);
@@ -82,7 +101,8 @@ const JobListings = () => {
       window.removeEventListener("savedJobsChanged", refreshVisibleJobs);
       window.removeEventListener("appliedJobsChanged", refreshVisibleJobs);
     };
-  }, [selectedSkills, filters]);
+    // eslint-disable-next-line
+  }, [allJobs, selectedSkills, filters]);
 
   const handleSearchInputChange = (e) => {
     setSearchInput(e.target.value);
@@ -289,34 +309,44 @@ const JobListings = () => {
       )}
 
       {/* Job Cards */}
-      <AnimatePresence mode="wait">
-        {visibleJobs.length > 0 ? (
-          <motion.div
-            key={currentPage}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-24 justify-items-center"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            exit={{ opacity: 0 }}
-          >
-            {currentJobs.map((job) => (
-              <motion.div key={job.id} variants={itemVariants}>
-                <JobCard job={job} />
-              </motion.div>
-            ))}
-          </motion.div>
-        ) : (
-          <div className="text-center py-12">
-            <h3 className="text-xl font-medium">No jobs found matching your criteria</h3>
-            <button
-              onClick={clearFilters}
-              className="btn btn-primary mt-4"
+      {loading ? (
+        <div className="text-center py-12">
+          <h3 className="text-xl font-medium">Loading...</h3>
+        </div>
+      ) : error ? (
+        <div className="text-center py-12">
+          <h3 className="text-xl font-medium text-red-500">{error}</h3>
+        </div>
+      ) : (
+        <AnimatePresence mode="wait">
+          {visibleJobs.length > 0 ? (
+            <motion.div
+              key={currentPage}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-24 justify-items-center"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit={{ opacity: 0 }}
             >
-              Clear Filters
-            </button>
-          </div>
-        )}
-      </AnimatePresence>
+              {currentJobs.map((job) => (
+                <motion.div key={job._id} variants={itemVariants}>
+                  <JobCard job={job} />
+                </motion.div>
+              ))}
+            </motion.div>
+          ) : (
+            <div className="text-center py-12">
+              <h3 className="text-xl font-medium">No jobs found matching your criteria</h3>
+              <button
+                onClick={clearFilters}
+                className="btn btn-primary mt-4"
+              >
+                Clear Filters
+              </button>
+            </div>
+          )}
+        </AnimatePresence>
+      )}
 
       {/* Pagination */}
       {visibleJobs.length > 0 && (
