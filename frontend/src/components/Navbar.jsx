@@ -30,7 +30,7 @@ const Navbar = () => {
     axios.get("http://localhost:5000/api/admin/auth/check", { withCredentials: true })
       .then(res => setIsAdmin(res.data.isAuthenticated))
       .catch(() => setIsAdmin(false));
-  }, []);
+  }, [user]);
 
   const handleLogout = () => {
     logout();

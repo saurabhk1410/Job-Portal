@@ -110,12 +110,12 @@ const PersonalInfo = ({ user, onUserUpdate }) => {
         </span>
         <div className="flex flex-col items-center mb-4">
           {/* Uploadable Profile Photo */}
-          <label htmlFor="photo-upload" className="cursor-pointer relative group">
+          {/* <label htmlFor="photo-upload" className="cursor-pointer relative group"> */}
             {/* Placeholder for profile photo */}
-            <div className="w-20 h-20 flex items-center justify-center rounded-full border-2 bg-base-200 text-base-content">
-              <FaUser className="text-5xl" />
-            </div>
-          </label>
+            {/* <div className="w-20 h-20 flex items-center justify-center rounded-full border-2 bg-base-200 text-base-content"> */}
+              {/* <FaUser className="text-5xl" /> */}
+            {/* </div> */}
+          {/* </label> */}
 
           {/* Gender */}
           <div className="flex gap-2 items-center justify-center mt-4">
