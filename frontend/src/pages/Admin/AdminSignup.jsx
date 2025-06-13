@@ -20,7 +20,7 @@ const AdminSignup = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-base-200">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-purple-100">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-96">
         <h2 className="text-2xl font-bold mb-6 text-center">Admin Signup</h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}
