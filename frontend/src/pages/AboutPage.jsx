@@ -115,31 +115,42 @@ const AboutPage = ({colormode}) => {
         </div>
       </motion.section>
 
-      {/* Founder */}
-      <motion.section 
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="mb-16 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-8"
-      >
-        <div className="flex flex-col md:flex-row gap-8 items-center">
-          <div className="flex-shrink-0">
-            <div className="w-32 h-32 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-500 text-4xl">
-              👨‍💻
-            </div>
-          </div>
-          <div>
-            <h2 className="text-2xl font-semibold mb-4 text-gray-800">Built by a Developer</h2>
-            <p className="text-gray-600 mb-4">
-              CodeRound was created as part of a frontend hiring challenge — but the goal was never just to pass a test. It was to create a platform that's intuitive, accessible, and actually helpful.
-            </p>
-            <p className="text-gray-600">
-              Crafted with React, Tailwind, and lots of love by <span className="font-semibold text-indigo-600">Saurabh Sharma</span>.
-            </p>
-          </div>
-        </div>
-      </motion.section>
+    {/* Founder */}
+<motion.section 
+  initial="hidden"
+  animate="visible"
+  variants={fadeIn}
+  transition={{ duration: 0.6, delay: 0.4 }}
+  className="mb-16 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-8"
+>
+  <div className="flex flex-col md:flex-row gap-8 items-center">
+    <div className="flex-shrink-0 flex gap-4">
+      <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-indigo-100">
+        <img 
+          src="https://avatars.githubusercontent.com/u/138638288?v=4" 
+          alt="Saurabh Sharma"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-indigo-100">
+        <img 
+          src="https://avatars.githubusercontent.com/u/160416508?s=400&u=27907b40860779ce107e78e82fb553e9ea3b22a6&v=4" 
+          alt="Tanay Shah"
+          className="w-full h-full object-cover"
+        />
+      </div>
+    </div>
+    <div>
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800">Built by Developers</h2>
+      <p className="text-gray-600 mb-4">
+        CodeRound was created as part of a frontend hiring challenge — but the goal was never just to pass a test. It was to create a platform that's intuitive, accessible, and actually helpful.
+      </p>
+      <p className="text-gray-600">
+        Crafted with React, Tailwind, and lots of love by <span className="font-semibold text-indigo-600">Saurabh Sharma <span className="text-gray-600">&</span> Tanay Shah</span>.
+      </p>
+    </div>
+  </div>
+</motion.section>
 
       {/* Footer Note */}
       <motion.footer
